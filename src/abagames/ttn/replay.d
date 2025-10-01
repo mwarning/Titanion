@@ -8,13 +8,13 @@ module abagames.ttn.replay;
 private import std.stream;
 private import abagames.util.sdl.pad;
 private import abagames.util.sdl.recordableinput;
+private import abagames.ttn.preference;
 
 /**
  * Save/Load a replay data.
  */
 public class ReplayData {
  public:
-  static const char[] DIR = "replay";
   static const int VERSION_NUM = 30;
   InputRecord!(PadState) inputRecord;
   long seed;
@@ -24,7 +24,7 @@ public class ReplayData {
  private:
 
   public void save(char[] fileName) {
-    auto File fd = new File(DIR ~ "/" ~ fileName, FileMode.OutNew);
+    auto File fd = new File(Preference.pref_dir() ~ "/" ~ fileName, FileMode.OutNew);
     fd.write(VERSION_NUM);
     fd.write(seed);
     fd.write(score);
@@ -35,7 +35,7 @@ public class ReplayData {
   }
 
   public void load(char[] fileName) {
-    auto File fd = new File(DIR ~ "/" ~ fileName, FileMode.In);
+    auto File fd = new File(Preference.pref_dir() ~ "/" ~ fileName, FileMode.In);
     int ver;
     fd.read(ver);
     if (ver != VERSION_NUM)

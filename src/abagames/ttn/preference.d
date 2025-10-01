@@ -6,6 +6,9 @@
 module abagames.ttn.preference;
 
 private import std.stream;
+private import std.file;
+private import std.c.stdlib;
+private import std.string;
 private import abagames.util.preference;
 
 /**
@@ -21,10 +24,24 @@ public class Preference: abagames.util.preference.Preference {
   int[RANKING_NUM][MODE_NUM] _highScore;
   int _lastMode;
 
+  public static char[] pref_dir()
+  {
+    char * home = getenv("HOME");
+    if (home is null)
+      throw new Error("HOME environment variable not defined");
+    char[] dir = std.string.toString(home) ~ "/.titanion";
+    try {
+      mkdir(dir);
+    } catch (FileException e) {
+    }
+    return dir;
+  }
+
+
   public void load() {
     auto File fd = null;
     try {
-      fd = new File(PREF_FILE_NAME, FileMode.In);
+      fd = new File(pref_dir() ~ "/" ~ PREF_FILE_NAME, FileMode.In);
       int ver;
       fd.read(ver);
       if (ver != VERSION_NUM)
@@ -50,7 +67,7 @@ public class Preference: abagames.util.preference.Preference {
   }
 
   public void save() {
-    auto File fd = new File(PREF_FILE_NAME, FileMode.OutNew);
+    auto File fd = new File(pref_dir() ~ "/" ~ PREF_FILE_NAME, FileMode.OutNew);
     fd.write(VERSION_NUM);
     fd.write(_lastMode);
     for(int j = 0; j < MODE_NUM; j++)
