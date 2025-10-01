@@ -16,19 +16,19 @@ private import abagames.util.sdl.sdlexception;
  */
 public class Texture {
  public:
-  static char[] imagesDir = "/usr/share/games/titanion/images/";
-  static SDL_Surface*[char[]] surface;
+  static string imagesDir = "/usr/share/games/titanion/images/";
+  static SDL_Surface*[string] surface;
  private:
   GLuint num, maskNum;
   int textureNum, maskTextureNum;
   Uint32[128 * 128] pixels;
   Uint32[128 * 128] maskPixels;
 
-  public static SDL_Surface* loadBmp(char[] name) {
+  public static SDL_Surface* loadBmp(string name) {
     if (name in surface) {
       return surface[name];
     } else {
-      char[] fileName = imagesDir ~ name;
+      string fileName = imagesDir ~ name;
       SDL_Surface *s = SDL_LoadBMP(std.string.toStringz(fileName));
       if (!s)
         throw new SDLInitFailedException("Unable to load: " ~ fileName);
@@ -55,7 +55,7 @@ public class Texture {
     }
   }
 
-  public this(char[] name) {
+  public this(string name) {
     SDL_Surface *s = loadBmp(name);
     glGenTextures(1, &num);
     glBindTexture(GL_TEXTURE_2D, num);
@@ -65,7 +65,7 @@ public class Texture {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   }
 
-  public this(char[] name, int sx, int sy, int xn, int yn, int panelWidth, int panelHeight,
+  public this(string name, int sx, int sy, int xn, int yn, int panelWidth, int panelHeight,
               Uint32 maskColor = 0xffffffffu) {
     SDL_Surface *s = loadBmp(name);
     Uint32* surfacePixels = cast(Uint32*) s.pixels;

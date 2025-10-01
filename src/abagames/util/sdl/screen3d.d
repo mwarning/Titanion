@@ -6,6 +6,7 @@
 module abagames.util.sdl.screen3d;
 
 private import std.string;
+private import std.conv;
 private import std.math;
 private import SDL;
 private import opengl;
@@ -34,7 +35,7 @@ public class Screen3D: Screen, SizableScreen {
     // Initialize SDL.
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
       throw new SDLInitFailedException(
-        "Unable to initialize SDL: " ~ std.string.toString(SDL_GetError()));
+        "Unable to initialize SDL: " ~ to!string(SDL_GetError()));
     }
     setIcon();
     // Create an OpenGL screen.
@@ -45,7 +46,7 @@ public class Screen3D: Screen, SizableScreen {
     } 
     if (SDL_SetVideoMode(_width, _height, 0, _videoFlags) == null) {
       throw new SDLInitFailedException
-        ("Unable to create SDL screen: " ~ std.string.toString(SDL_GetError()));
+        ("Unable to create SDL screen: " ~ to!string(SDL_GetError()));
     }
     glViewport(0, 0, width, height);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -60,7 +61,7 @@ public class Screen3D: Screen, SizableScreen {
     int screen_height = _height;
     if (SDL_SetVideoMode(screen_width, screen_height, 0, _videoFlags) == null) {
       throw new SDLInitFailedException
-        ("Unable to resize SDL screen: " ~ std.string.toString(SDL_GetError()));
+        ("Unable to resize SDL screen: " ~ to!string(SDL_GetError()));
     }
 
     // adjust width and height to maintain correct aspect ratio
@@ -110,10 +111,10 @@ public class Screen3D: Screen, SizableScreen {
     if (error == GL_NO_ERROR)
       return;
     closeSDL();
-    throw new Exception("OpenGL error(" ~ std.string.toString(error) ~ ")");
+    throw new Exception("OpenGL error(" ~ to!string(error) ~ ")");
   }
 
-  protected void setCaption(char[] name) {
+  protected void setCaption(string name) {
     SDL_WM_SetCaption(std.string.toStringz(name), null);
   }
 

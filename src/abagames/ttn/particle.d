@@ -47,7 +47,7 @@ public class Particle: Token!(ParticleState, ParticleSpec) {
                   float x, float y, float deg, float speed,
                   float sz, float r, float g, float b,
                   int c = 60, bool ebg = true, float num = 0, int waitCnt = 0) {
-    switch (type) {
+    switch (type) { default: break;
     case Shape.TRIANGLE:
       spec = triangleParticleSpec;
       break;
@@ -108,7 +108,7 @@ public class ParticleState: TokenState {
   float trgSize;
   int waitCnt;
 
-  invariant {
+  invariant() {
     if (isInitialized) {
       assert(pos.x <>= 0);
       assert(pos.y <>= 0);

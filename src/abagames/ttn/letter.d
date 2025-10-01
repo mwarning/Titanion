@@ -111,7 +111,7 @@ public class Letter {
     return idx;
   }
 
-  public static void drawString(char[] str, float lx, float y, float s,
+  public static void drawString(string str, float lx, float y, float s,
                                 int d = Direction.TO_RIGHT,
                                 bool rev = false, float od = 0,
                                 float r = 1, float g = 1, float b = 1) {
@@ -120,7 +120,7 @@ public class Letter {
     float x = lx;
     int idx;
     float ld;
-    switch (d) {
+    switch (d) { default: break;
     case Direction.TO_RIGHT:
       ld = 0;
       break;
@@ -157,7 +157,7 @@ public class Letter {
         }
       }
       if (od == 0) {
-        switch(d) {
+        switch(d) { default: break;
         case Direction.TO_RIGHT:
           x += s * LETTER_WIDTH;
           break;
@@ -298,6 +298,8 @@ public class Letter {
         break;
       case Shape.LINE:
         drawSegmentLine(x, y, size, length, deg);
+        break;
+      default:
         break;
       }
     }

@@ -69,7 +69,7 @@ public class Player: Token!(PlayerState, PlayerSpec) {
       if (!hasCollision)
         return false;
       if (fabs(pos.x - p.x) < size.x && fabs(pos.y - p.y) < size.y) {
-        switch (spec.gameState.mode) {
+        switch (spec.gameState.mode) { default: break;
         case GameState.Mode.CLASSIC:
           destroy();
           break;
@@ -140,7 +140,7 @@ public class Player: Token!(PlayerState, PlayerSpec) {
   }
 
   public bool enemiesHasCollision() {
-    switch (spec.gameState.mode) {
+    final switch (spec.gameState.mode) {
     case GameState.Mode.CLASSIC:
       return state.hasCollision;
     case GameState.Mode.BASIC:
@@ -178,7 +178,7 @@ public class PlayerState: TokenState {
   int ghostShotCnt;
   bool midEnemyProvacated;
 
-  invariant {
+  invariant() {
     if (isInitialized) {
       assert(vel.x <>= 0);
       assert(vel.y <>= 0);
@@ -359,7 +359,7 @@ public class PlayerSpec: TokenSpec!(PlayerState) {
 
   public void start() {
     clear();
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
       bulletHitWidth = 0.4f;
       shotMaxNum = 3;
@@ -455,7 +455,7 @@ public class PlayerSpec: TokenSpec!(PlayerState) {
           d += PI / 2;
         }
       }
-      switch (gameState.mode) {
+      switch (gameState.mode) { default: break;
       case GameState.Mode.CLASSIC:
         /*if (input.button & PadState.Button.A) {
           if (!aPressed) {
@@ -506,7 +506,7 @@ public class PlayerSpec: TokenSpec!(PlayerState) {
             capturedEnemyWidth = 1;
         }
       }
-      switch (gameState.mode) {
+      switch (gameState.mode) { default: break;
       case GameState.Mode.CLASSIC:
         if (input.button & PadState.Button.B &&
             !captureBeamReleased && captureBeamEnergy >= 1 &&
@@ -548,7 +548,7 @@ public class PlayerSpec: TokenSpec!(PlayerState) {
         shotCnt--;
       if (capturedEnemyShotCnt > 0)
         capturedEnemyShotCnt--;
-      switch (gameState.mode) {
+      switch (gameState.mode) { default: break;
       case GameState.Mode.CLASSIC:
       case GameState.Mode.BASIC:
         if (pos.y > 0)
@@ -863,7 +863,7 @@ public class TractorBeam {
   int cnt;
   bool isExtending;
 
-  invariant {
+  invariant() {
     assert(length <>= 0);
   }
 
@@ -933,7 +933,7 @@ public class TractorBeam {
       if (s > 1)
         s = 1;
       glScalef(s, s, s);
-      switch (gameState.mode) {
+      switch (gameState.mode) { default: break;
       case GameState.Mode.CLASSIC:
       case GameState.Mode.BASIC:
         shapes[c % 3].draw();

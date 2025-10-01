@@ -23,8 +23,8 @@ public class ReplayData {
   bool stageRandomized;
  private:
 
-  public void save(char[] fileName) {
-    auto File fd = new File(Preference.pref_dir() ~ "/" ~ fileName, FileMode.OutNew);
+  public void save(string fileName) {
+    scope File fd = new File(Preference.pref_dir() ~ "/" ~ fileName, FileMode.OutNew);
     fd.write(VERSION_NUM);
     fd.write(seed);
     fd.write(score);
@@ -34,8 +34,8 @@ public class ReplayData {
     fd.close();
   }
 
-  public void load(char[] fileName) {
-    auto File fd = new File(Preference.pref_dir() ~ "/" ~ fileName, FileMode.In);
+  public void load(string fileName) {
+    scope File fd = new File(Preference.pref_dir() ~ "/" ~ fileName, FileMode.In);
     int ver;
     fd.read(ver);
     if (ver != VERSION_NUM)

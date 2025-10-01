@@ -9,6 +9,7 @@ private import std.stream;
 private import std.file;
 private import std.c.stdlib;
 private import std.string;
+private import std.conv;
 private import abagames.util.preference;
 
 /**
@@ -20,16 +21,16 @@ public class Preference: abagames.util.preference.Preference {
   static const int MODE_NUM = 3;
  private:
   static const int VERSION_NUM = 30;
-  static const char[] PREF_FILE_NAME = "ttn.prf";
+  static const string PREF_FILE_NAME = "ttn.prf";
   int[RANKING_NUM][MODE_NUM] _highScore;
   int _lastMode;
 
-  public static char[] pref_dir()
+  public static string pref_dir()
   {
-    char * home = getenv("HOME");
+    const(char)* home = getenv("HOME");
     if (home is null)
       throw new Error("HOME environment variable not defined");
-    char[] dir = std.string.toString(home) ~ "/.titanion";
+    string dir = to!string(home) ~ "/.titanion";
     try {
       mkdir(dir);
     } catch (FileException e) {
@@ -39,9 +40,8 @@ public class Preference: abagames.util.preference.Preference {
 
 
   public void load() {
-    auto File fd = null;
     try {
-      fd = new File(pref_dir() ~ "/" ~ PREF_FILE_NAME, FileMode.In);
+      scope File fd = new File(pref_dir() ~ "/" ~ PREF_FILE_NAME, FileMode.In);
       int ver;
       fd.read(ver);
       if (ver != VERSION_NUM)
@@ -50,12 +50,8 @@ public class Preference: abagames.util.preference.Preference {
       for(int j = 0; j < MODE_NUM; j++)
         for(int i = 0; i < RANKING_NUM; i++)
           fd.read(_highScore[j][i]);
-    } catch (Object e) {
+    } catch (Throwable e) {
       init();
-    } finally {
-      if (fd)
-        if (fd.isOpen())
-          fd.close();
     }
   }
 
@@ -67,7 +63,7 @@ public class Preference: abagames.util.preference.Preference {
   }
 
   public void save() {
-    auto File fd = new File(pref_dir() ~ "/" ~ PREF_FILE_NAME, FileMode.OutNew);
+    scope File fd = new File(pref_dir() ~ "/" ~ PREF_FILE_NAME, FileMode.OutNew);
     fd.write(VERSION_NUM);
     fd.write(_lastMode);
     for(int j = 0; j < MODE_NUM; j++)

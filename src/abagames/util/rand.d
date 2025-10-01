@@ -6,7 +6,7 @@
 module abagames.util.rand;
 
 private import std.stream;
-private import std.date;
+private import std.datetime;
 
 /**
  * Random number generator.
@@ -25,12 +25,12 @@ public template StaticRandImpl() {
 public class Rand {
 
   public this() {
-    d_time timer = getUTCtime();
-    init_genrand(timer);
+    long timer = Clock.currStdTime();
+    init_genrand(cast(uint)timer);
   }
 
   public void setSeed(long n) {
-    init_genrand(n);
+    init_genrand(cast(uint)n);
   }
 
   public uint nextInt32() {
@@ -66,7 +66,7 @@ public class Rand {
      Matthe Bellew, and Isaku Wada
    Andrew C. Edwards  v0.1  30 September 2003  edwardsac@ieee.org
 
-   Before using, initialize the state by using init_genrand(seed) 
+   Before using, initialize the state by using init_genrand(cast(uint)seed) 
    or init_by_array(init_key, key_length).
 
    Copyright (C) 1997 - 2002, Makoto Matsumoto and Takuji Nishimura,
@@ -133,7 +133,7 @@ void init_genrand(uint s)
 {
     state[0]= s & 0xffffffffUL;
     for (int j=1; j<N; j++) {
-        state[j] = (1812433253UL * (state[j-1] ^ (state[j-1] >> 30)) + j); 
+        state[j] = (1812433253U * (state[j-1] ^ (state[j-1] >> 30)) + j); 
         /* See Knuth TAOCP Vol2. 3rd Ed. P.106 for multiplier. */
         /* In the previous versions, MSBs of the seed affect   */
         /* only MSBs of the array state[].                        */
@@ -151,11 +151,11 @@ void init_genrand(uint s)
 void init_by_array(uint init_key[], uint key_length)
 {
     int i, j, k;
-    init_genrand(19650218UL);
+    init_genrand(cast(uint)19650218UL);
     i=1; j=0;
     k = (N>key_length ? N : key_length);
     for (; k; k--) {
-        state[i] = (state[i] ^ ((state[i-1] ^ (state[i-1] >> 30)) * 1664525UL))
+        state[i] = (state[i] ^ ((state[i-1] ^ (state[i-1] >> 30)) * 1664525U))
           + init_key[j] + j; /* non linear */
         state[i] &= 0xffffffffUL; /* for WORDSIZE > 32 machines */
         i++; j++;
@@ -163,7 +163,7 @@ void init_by_array(uint init_key[], uint key_length)
         if (j>=key_length) j=0;
     }
     for (k=N-1; k; k--) {
-        state[i] = (state[i] ^ ((state[i-1] ^ (state[i-1] >> 30)) * 1566083941UL))
+        state[i] = (state[i] ^ ((state[i-1] ^ (state[i-1] >> 30)) * 1566083941U))
           - i; /* non linear */
         state[i] &= 0xffffffffUL; /* for WORDSIZE > 32 machines */
         i++;
@@ -178,9 +178,9 @@ void next_state()
 {
     uint *p=state.ptr;
 
-    /* if init_genrand() has not been called, */
+    /* if init_genrand(cast(uint)) has not been called, */
     /* a default initial seed is used         */
-    if (initf==0) init_genrand(5489UL);
+    if (initf==0) init_genrand(cast(uint)5489UL);
 
     left = N;
     next = state.ptr;

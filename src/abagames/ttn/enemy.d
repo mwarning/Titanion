@@ -205,7 +205,7 @@ public class Enemy: Token!(EnemyState, EnemySpec) {
     state.ellipseRatio = er;
     state.ellipseDeg = ed;
     state.isGoingDownBeforeStandBy = gd;
-    switch (appPattern) {
+    switch (appPattern) { default: break;
     case 0:
       state.phase = -200;
       break;
@@ -290,7 +290,7 @@ public class Enemy: Token!(EnemyState, EnemySpec) {
     spec.drawTrails(state);
   }
 
-  public Vector pos() {
+  public override Vector pos() {
     return state.pos;
   }
 }
@@ -321,7 +321,7 @@ public class EnemyState: TokenState {
   bool isFirstEnemy;
   float anger;
 
-  invariant {
+  invariant() {
     if (isInitialized) {
       assert(baseBaseSpeed >= 0);
       assert(baseSpeed >= 0);
@@ -345,7 +345,7 @@ public class EnemyState: TokenState {
 
   public this() {
     super();
-    foreach (inout TurretState ts; turretStates)
+    foreach (ref TurretState ts; turretStates)
       ts = new TurretState;
     vel = new Vector;
     centerPos = new Vector;
@@ -355,7 +355,7 @@ public class EnemyState: TokenState {
     targetSize = new Vector;
     sizeVel = new Vector;
     trails = new Trail[TRAIL_NUM];
-    foreach (inout Trail t; trails)
+    foreach (ref Trail t; trails)
       t = new Trail;
   }
 
@@ -444,10 +444,10 @@ public class EnemySpec: TokenSpec!(EnemyState) {
   float rank = 0;
   bool capturable;
   int score;
-  char[] explosionSeName;
+  string explosionSeName;
   bool removeBullets;
 
-  invariant {
+  invariant() {
     assert(shield > 0);
     assert(rank >= 0);
     assert(turretWidth >= 0);
@@ -548,7 +548,7 @@ public class EnemySpec: TokenSpec!(EnemyState) {
           TurretState ts = turretStates[i];
           float tx = pos.x;
           float ty = pos.y;
-          switch (i) {
+          switch (i) { default: break;
           case 0:
             break;
           case 1:
@@ -560,7 +560,7 @@ public class EnemySpec: TokenSpec!(EnemyState) {
           }
           float turretDeg =
             atan2(field.normalizeX(-(player.pos.x - tx)), player.pos.y - ty);
-          switch (gameState.mode) {
+          switch (gameState.mode) { default: break;
           case GameState.Mode.CLASSIC:
             if (turretDeg >= 0 && turretDeg < PI - PI / 6)
               turretDeg = PI - PI / 6;
@@ -591,7 +591,7 @@ public class EnemySpec: TokenSpec!(EnemyState) {
 
   private void moveCaptured(EnemyState es) {
     with (es) {
-      switch (captureState) {
+      switch (captureState) { default: break;
       case 1:
         vel.x += (player.pos.x - pos.x) * 0.03f;
         vel.y += (player.pos.y - pos.y) * 0.03f;
@@ -684,7 +684,7 @@ public class EnemySpec: TokenSpec!(EnemyState) {
         destroyed(es, dd);
         return true;
       }
-      switch (gameState.mode) {
+      switch (gameState.mode) { default: break;
       case GameState.Mode.CLASSIC:
         targetSize.x *= 1.3f;
         targetSize.y *= 1.3f;
@@ -793,7 +793,7 @@ public class EnemySpec: TokenSpec!(EnemyState) {
       switch (phase) {
       case -300:
         float cpw;
-        switch (gameState.mode) {
+        switch (gameState.mode) { default: break;
         case GameState.Mode.CLASSIC:
         case GameState.Mode.BASIC:
           cpw = 0.2f;
@@ -959,7 +959,7 @@ public class EnemySpec: TokenSpec!(EnemyState) {
     (cast(EnemyShape) shape).draw(p, cd, es.deg, es.cnt, es.size);
     for (int i = 1; i < turretNum; i++) {
       float x = es.pos.x;
-      switch (i) {
+      switch (i) { default: break;
       case 1:
         x -= turretWidth;
         break;
@@ -988,7 +988,7 @@ public class Trail {
   float deg;
   int cnt;
 
-  invariant {
+  invariant() {
     assert(pos.x <>= 0);
     assert(pos.y <>= 0);
     assert(deg <>= 0);
@@ -1015,7 +1015,7 @@ public class GhostEnemySpec: EnemySpec {
     this.shape = shape;
   }
 
-  public void draw(EnemyState es) {
+  public override void draw(EnemyState es) {
     with (es) {
       Vector3 p = field.calcCircularPos(pos);
       float cd = field.calcCircularDeg(pos.x);
@@ -1027,13 +1027,13 @@ public class GhostEnemySpec: EnemySpec {
   public override void set(EnemyState es) {}
   public override bool move(EnemyState es) { return true; }
   public override void destroyed(EnemyState es, float dd = 0) {}
-  public void setRank(float rank) {}
-  public void init(EnemyState es) {}
-  public bool gotoNextPhase(EnemyState es) { return false; }
-  public bool isInAttack(EnemyState es) { return false; }
-  protected int calcStandByTime(EnemyState es) { return 0; }
-  public bool isBeingCaptured(EnemyState es) { return true; }
-  public bool isCaptured(EnemyState es) { return true; }
+  public override void setRank(float rank) {}
+  public override void init(EnemyState es) {}
+  public override bool gotoNextPhase(EnemyState es) { return false; }
+  public override bool isInAttack(EnemyState es) { return false; }
+  protected override int calcStandByTime(EnemyState es) { return 0; }
+  public override bool isBeingCaptured(EnemyState es) { return true; }
+  public override bool isCaptured(EnemyState es) { return true; }
 }
 
 public class MiddleEnemySpec: EnemySpec {
@@ -1047,10 +1047,10 @@ public class MiddleEnemySpec: EnemySpec {
               GameState gameState) {
     super(field, bullets, player, particles, bonusParticles, enemies, stage,
           shape, trailShape, bulletSpec, counterBulletSpec, gameState);
-    foreach (inout TurretSpec ts; turretSpecs)
+    foreach (ref TurretSpec ts; turretSpecs)
       ts = new TurretSpec(field, bullets, player, enemies, particles,
                           stage, bulletSpec, gameState);
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
       shield = 2;
       capturable = false;
@@ -1079,10 +1079,10 @@ public class MiddleEnemySpec: EnemySpec {
     }
   }
 
-  public void setRank(float r) {
+  public override void setRank(float r) {
     rank = sqrt(r);
     float tr;
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
       rank = sqrt(rank);
       tr = r * 2;
@@ -1102,7 +1102,7 @@ public class MiddleEnemySpec: EnemySpec {
     if (gameState.mode == GameState.Mode.MODERN) {
       TurretSpec ts = turretSpecs[0];
       int ptn = rand.nextInt(6);
-      switch (ptn) {
+      switch (ptn) { default: break;
       case 0:
         break;
       case 1:
@@ -1244,7 +1244,7 @@ public class SmallEnemySpec: EnemySpec {
           shape, trailShape, bulletSpec, counterBulletSpec, gameState);
     turretSpecs[0] = new TurretSpec(field, bullets, player, enemies, particles,
                                     stage, bulletSpec, gameState);
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
     case GameState.Mode.BASIC:
       shield = 1;
@@ -1276,10 +1276,10 @@ public class SmallEnemySpec: EnemySpec {
     }
   }
 
-  public void setRank(float r) {
+  public override void setRank(float r) {
     rank = sqrt(r * 0.5f);
     float tr;
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
       rank = sqrt(rank);
       tr = r;
@@ -1321,7 +1321,7 @@ private:
     with (es) {
       if (phase < 0)
         return gotoNextPhaseInAppearing(es);
-      switch (phase) {
+      switch (phase) { default: break;
       case 1:
         if (!player.hasCollision || enemies.numInAttack > stage.attackSmallEnemyNum) {
           phase = 0;
@@ -1374,7 +1374,7 @@ private:
     with (es) {
       if (phase < 0)
         return gotoNextPhaseInAppearing(es);
-      switch (phase) {
+      switch (phase) { default: break;
       case 1:
         if (!player.hasCollision || enemies.numInAttack > stage.attackSmallEnemyNum) {
           phase = 0;
@@ -1442,7 +1442,7 @@ public class TurretState: TokenState {
   int burstNum;
   int nwaySpeedAccelDir;
 
-  invariant {
+  invariant() {
     if (isInitialized) {
       assert(fireCnt <>= 0);
       assert(burstCnt <>= 0);
@@ -1488,7 +1488,7 @@ public class TurretSpec: TokenSpec!(TurretState) {
   bool _disabled;
   float minimumFireDist;
 
-  invariant {
+  invariant() {
     assert(interval > 0);
     assert(speed > 0);
     assert(speedAccel < 1 && speedAccel > -1);
@@ -1557,7 +1557,7 @@ public class TurretSpec: TokenSpec!(TurretState) {
     float nsr = 0.5f + rand.nextSignedFloat(0.3f);
     float nr, br, ir;
     float intervalMax = INTERVAL_MAX;
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
       nr = br = 0;
       ir = sqrt(rank * nsr) * 2;
@@ -1603,7 +1603,7 @@ public class TurretSpec: TokenSpec!(TurretState) {
     else
       speed = sqrt(speed * 10) / 10;
     assert(speed > 0);
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
       speed *= 0.36f;
       if (speed < 0.05f)
@@ -1632,7 +1632,7 @@ public class TurretSpec: TokenSpec!(TurretState) {
     float nr, br, ir;
     float nwayDegRatio;
     float intervalMax = INTERVAL_MAX;
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
       nr = br = 0;
       ir = sqrt(rank * (0.5f + rand.nextSignedFloat(0.3f))) * 2;
@@ -1655,7 +1655,7 @@ public class TurretSpec: TokenSpec!(TurretState) {
       burstInterval = 3 + rand.nextInt(2);
       break;
     case GameState.Mode.MODERN:
-      switch (rand.nextInt(5)) {
+      switch (rand.nextInt(5)) { default: break;
       case 0:
         rank *= 1.2f;
         nr = 0;
@@ -1702,7 +1702,7 @@ public class TurretSpec: TokenSpec!(TurretState) {
     else
       speed = sqrt(speed * 10) / 10;
     assert(speed > 0);
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
       speed *= 0.36f;
       if (speed < 0.05f)
@@ -1737,6 +1737,10 @@ public class TurretSpec: TokenSpec!(TurretState) {
     if (rand.nextInt(3) == 0)
       fireingAtATime = true;
     minimumFireDist = 5;
+  }
+
+  public override bool move(TurretState ts) {
+    return move(ts, 1, 0);
   }
 
   public bool move(TurretState ts, float time = 1, float anger = 0) {

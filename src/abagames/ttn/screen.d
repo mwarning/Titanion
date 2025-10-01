@@ -16,15 +16,15 @@ private import abagames.ttn.field;
  */
 public class Screen: Screen3D {
  private:
-  static const char[] CAPTION = "Titanion";
-  static const char[] ICON_FILE_NAME = "/usr/share/games/titanion/images/ttn_icon32.bmp";
+  static const string CAPTION = "Titanion";
+  static const string ICON_FILE_NAME = "/usr/share/games/titanion/images/ttn_icon32.bmp";
   Field field;
 
-  protected void setIcon() {
+  protected override void setIcon() {
     SDL_WM_SetIcon(SDL_LoadBMP(std.string.toStringz(ICON_FILE_NAME)), null);
   }
 
-  protected void init() {
+  protected override void init() {
     setCaption(CAPTION);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     glEnable(GL_BLEND);
@@ -42,7 +42,7 @@ public class Screen: Screen3D {
     screenResized();
   }
 
-  protected void close() {}
+  protected override void close() {}
 
   public override void screenResized() {
     super.screenResized();

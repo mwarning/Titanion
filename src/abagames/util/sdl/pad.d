@@ -164,7 +164,11 @@ public class RecordablePad: Pad {
   mixin RecordableInput!(PadState);
  private:
 
-  public PadState getState(bool doRecord = true) {
+  public override PadState getState() {
+    return getState(true);
+  }
+
+  public PadState getState(bool doRecord) {
     PadState s = super.getState();
     if (doRecord)
       record(s);

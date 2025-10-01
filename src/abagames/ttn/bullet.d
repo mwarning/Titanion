@@ -31,7 +31,7 @@ public class BulletPool: ActorPool!(Bullet) {
     BulletState.move();
   }
 
-  public void removeAround(inout int cnt, Vector pos,
+  public void removeAround(ref int cnt, Vector pos,
                            ParticlePool particles, ParticlePool bonusParticles,
                            Player player) {
     foreach (Bullet b; actors) {
@@ -183,7 +183,7 @@ public class BulletSpec: TokenSpec!(BulletState) {
       glEnd();
       p = field.calcCircularPos(pos);
       float d;
-      switch (gameState.mode) {
+      switch (gameState.mode) { default: break;
       case GameState.Mode.CLASSIC:
         d = PI;
         break;

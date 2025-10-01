@@ -202,7 +202,7 @@ public class Stage {
       rank *= 0.1f;
     if (!randomized) {
       long rs = phaseNum;
-      switch (gameState.mode) {
+      switch (gameState.mode) { default: break;
       case GameState.Mode.CLASSIC:
         rs *= 2;
         break;
@@ -218,7 +218,7 @@ public class Stage {
     }
     _existsCounterBullet = false;
     int en;
-    switch (gameState.mode) {
+    switch (gameState.mode) { default: break;
     case GameState.Mode.CLASSIC:
       en = 24 + cast(int) ((50 + rand.nextInt(10)) * sqrt(rank) * 0.2f);
       smallEnemyNum = 4 + rand.nextInt(2);
@@ -333,7 +333,7 @@ public class Stage {
           break;
         SmallEnemySpec ses;
         int appPattern = formationIdx % 2;
-        switch (formationIdx % 3) {
+        switch (formationIdx % 3) { default: break;
         case 0:
         case 1:
           ses = cast(SmallEnemySpec) smallEnemy1Spec;

@@ -5,7 +5,7 @@
  */
 module abagames.util.actor;
 
-private import std.stdarg;
+private import core.vararg;
 
 /**
  * Actor that has an interface to move and draw.
@@ -35,7 +35,7 @@ public class ActorPool(T) {
  public:
   T[] actors;
  protected:
-  int actorIdx = 0;
+  ptrdiff_t actorIdx = 0;
  private:
   bool hasNoActor;
 
@@ -54,7 +54,7 @@ public class ActorPool(T) {
 
   protected void createActors(int n, Object[] args = null) {
     actors = new T[n];
-    foreach (inout T a; actors) {
+    foreach (ref T a; actors) {
       a = new T;
       a.exists = false;
       a.init(args);
