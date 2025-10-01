@@ -183,5 +183,5 @@ private char[][] readOptionsIniFile() {
 
 private void usage(char[] progName) {
   Logger.error
-    ("Usage: " ~ progName ~ " [-fullscreen] [-res x y] [-brightness [0-100]] [-nosound] [-bgmvol [0-128]] [-sevol [0-128]] [-exchange] [-trail] [-noslowdown] [-randomized]");
+    ("Usage: " ~ progName ~ " [-window] [-fullscreen] [-res x y] [-brightness [0-100]] [-nosound] [-bgmvol [0-128]] [-sevol [0-128]] [-exchange] [-trail] [-noslowdown] [-randomized]");
 }
