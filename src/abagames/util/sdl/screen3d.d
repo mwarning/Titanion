@@ -24,6 +24,7 @@ public class Screen3D: Screen, SizableScreen {
   int _width = 640;
   int _height = 480;
   bool _windowMode = true;
+  Uint32 _videoFlags = 0;
 
   protected abstract void init();
   protected abstract void close();
@@ -37,13 +38,12 @@ public class Screen3D: Screen, SizableScreen {
     }
     setIcon();
     // Create an OpenGL screen.
-    Uint32 videoFlags;
     if (_windowMode) {
-      videoFlags = SDL_OPENGL | SDL_RESIZABLE;
+      _videoFlags = SDL_OPENGL | SDL_RESIZABLE;
     } else {
-      videoFlags = SDL_OPENGL | SDL_FULLSCREEN;
+      _videoFlags = SDL_OPENGL | SDL_FULLSCREEN;
     } 
-    if (SDL_SetVideoMode(_width, _height, 0, videoFlags) == null) {
+    if (SDL_SetVideoMode(_width, _height, 0, _videoFlags) == null) {
       throw new SDLInitFailedException
         ("Unable to create SDL screen: " ~ std.string.toString(SDL_GetError()));
     }
@@ -56,7 +56,20 @@ public class Screen3D: Screen, SizableScreen {
 
   // Reset a viewport when the screen is resized.
   public void screenResized() {
-    glViewport(0, 0, _width, _height);
+    int screen_width = _width;
+    int screen_height = _height;
+    if (SDL_SetVideoMode(screen_width, screen_height, 0, _videoFlags) == null) {
+      throw new SDLInitFailedException
+        ("Unable to resize SDL screen: " ~ std.string.toString(SDL_GetError()));
+    }
+
+    // adjust width and height to maintain correct aspect ratio
+    if (screen_width * 480 > screen_height * 640)
+      _width = screen_height * 640 / 480;
+    else if (screen_width * 480 < screen_height * 640)
+      _height = screen_width * 480 / 640;
+
+    glViewport((screen_width - _width) / 2, screen_height - _height, _width, _height);
     glMatrixMode(GL_PROJECTION);
     setPerspective();
     glMatrixMode(GL_MODELVIEW);
