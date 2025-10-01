@@ -21,7 +21,7 @@ public class Screen: Screen3D {
   Field field;
 
   protected void setIcon() {
-    SDL_WM_SetIcon(SDL_LoadBMP(ICON_FILE_NAME), null);
+    SDL_WM_SetIcon(SDL_LoadBMP(std.string.toStringz(ICON_FILE_NAME)), null);
   }
 
   protected void init() {
