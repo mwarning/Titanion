@@ -1,11 +1,22 @@
-GDC=gdc
-DSRC=$(shell find import src/abagames -name "*.d" | LC_ALL=C sort)
-EXE=titanion
 
-all: $(EXE)
+CPPFLAGS += -Wall -O2 -Isrc/
+LDFLAGS += -lSDL -lSDL_mixer -lGLU -lGL -lm
 
-$(EXE): $(DSRC)
-	$(GDC) -o $@ -Iimport -Isrc -Wdeprecated $(DFLAGS) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(DSRC) -lSDL -lGL -lGLU -lSDL_mixer
+.PHONY: all clean codeformat
+
+# add all C++ files
+CPP_FILES = $(wildcard src/abagames/*/*.cpp) $(wildcard src/abagames/*/*/*.cpp)
+
+OBJS=$(CPP_FILES:.cpp=.o)
+
+%.o : %.cpp
+	$(CXX) $(CPPFLAGS) -c -o $@ $<
+
+all: $(OBJS)
+	$(CXX) $(OBJS) $(LDFLAGS) -o titanion
+
+codeformat:
+	clang-format -style=llvm -i -- src/abagames/*/*.cpp src/abagames/*/*.hpp src/abagames/*/*/*.cpp src/abagames/*/*/*.hpp
 
 clean:
-	rm -f $(EXE)
+	rm -f titanion $(OBJS)
