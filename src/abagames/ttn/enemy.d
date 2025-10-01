@@ -191,8 +191,8 @@ public class EnemyPool: ActorPool!(Enemy) {
 public class Enemy: Token!(EnemyState, EnemySpec) {
  private:
 
-  public override void init(Object[] args) {
-    super.init(args);
+  public override void init_(Object[] args) {
+    super.init_(args);
     state.enemy = this;
   }
 
@@ -327,19 +327,19 @@ public class EnemyState: TokenState {
       assert(baseSpeed >= 0);
       assert(baseAngVel >= 0);
       assert(angVel >= 0);
-      assert(centerPos.x <>= 0);
-      assert(centerPos.y <>= 0);
-      assert(centerVel.x <>= 0);
-      assert(centerVel.y <>= 0);
-      assert(shield <>= 0);
+      assert(!isNaN(centerPos.x));
+      assert(!isNaN(centerPos.y));
+      assert(!isNaN(centerVel.x));
+      assert(!isNaN(centerVel.y));
+      assert(!isNaN(shield));
       assert(captureState >= 0);
-      assert(size.x <>= 0);
-      assert(size.y <>= 0);
-      assert(targetSize.x <>= 0);
-      assert(targetSize.y <>= 0);
-      assert(sizeVel.x <>= 0);
-      assert(sizeVel.y <>= 0);
-      assert(anger <>= 0);
+      assert(!isNaN(size.x));
+      assert(!isNaN(size.y));
+      assert(!isNaN(targetSize.x));
+      assert(!isNaN(targetSize.y));
+      assert(!isNaN(sizeVel.x));
+      assert(!isNaN(sizeVel.y));
+      assert(!isNaN(anger));
     }
   }
 
@@ -543,7 +543,7 @@ public class EnemySpec: TokenSpec!(EnemyState) {
           deg -= av;
         else
           deg = td;
-        assert(deg <>= 0);
+        assert(!isNaN(deg));
         for (int i = 0; i < turretNum; i++) {
           TurretState ts = turretStates[i];
           float tx = pos.x;
@@ -989,9 +989,9 @@ public class Trail {
   int cnt;
 
   invariant() {
-    assert(pos.x <>= 0);
-    assert(pos.y <>= 0);
-    assert(deg <>= 0);
+    assert(!isNaN(pos.x));
+    assert(!isNaN(pos.y));
+    assert(!isNaN(deg));
   }
 
   public this() {
@@ -1444,8 +1444,8 @@ public class TurretState: TokenState {
 
   invariant() {
     if (isInitialized) {
-      assert(fireCnt <>= 0);
-      assert(burstCnt <>= 0);
+      assert(!isNaN(fireCnt));
+      assert(!isNaN(burstCnt));
     }
   }
 
@@ -1496,9 +1496,9 @@ public class TurretSpec: TokenSpec!(TurretState) {
     assert(burstInterval >= 0);
     assert(nway >= 1);
     assert(nwayAngle >= 0);
-    assert(nwayBaseDeg <>= 0);
-    assert(nwaySpeedAccel <>= 0);
-    assert(fireIntervalRatio <>= 0);
+    assert(!isNaN(nwayBaseDeg));
+    assert(!isNaN(nwaySpeedAccel));
+    assert(!isNaN(fireIntervalRatio));
     assert(minimumFireDist >= 0);
   }
 

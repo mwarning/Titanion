@@ -5,7 +5,7 @@
  */
 module abagames.util.tokenizer;
 
-private import std.stream;
+private import std.stdio;
 private import std.string;
 private import std.conv;
 
@@ -17,9 +17,9 @@ public class Tokenizer {
 
   public static string[] readFile(string fileName, string separator) {
     string[] result;
-    scope File fd = new File(fileName, FileMode.In);
+    File fd = File(fileName);
     for (;;) {
-      string line = to!string(fd.readLine());
+      string line = fd.readln();
       if (!line)
         break;
       string[] spl = std.string.split(line, separator);

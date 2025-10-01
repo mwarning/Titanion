@@ -35,8 +35,8 @@ public class Particle: Token!(ParticleState, ParticleSpec) {
   private QuadParticleSpec quadParticleSpec;
   private BonusParticleSpec bonusParticleSpec;
 
-  public override void init(Object[] args) {
-    super.init(args);
+  public override void init_(Object[] args) {
+    super.init_(args);
     triangleParticleSpec = cast(TriangleParticleSpec) args[0];
     lineParticleSpec = cast(LineParticleSpec) args[1];
     quadParticleSpec = cast(QuadParticleSpec) args[2];
@@ -110,23 +110,23 @@ public class ParticleState: TokenState {
 
   invariant() {
     if (isInitialized) {
-      assert(pos.x <>= 0);
-      assert(pos.y <>= 0);
-      assert(vel.x <>= 0);
-      assert(vel.y <>= 0);
-      assert(tailPos.x <>= 0);
-      assert(tailPos.y <>= 0);
+      assert(!isNaN(pos.x));
+      assert(!isNaN(pos.y));
+      assert(!isNaN(vel.x));
+      assert(!isNaN(vel.y));
+      assert(!isNaN(tailPos.x));
+      assert(!isNaN(tailPos.y));
       assert(size > 0 && size < 20);
       assert(r >= 0 && r <= 1);
       assert(g >= 0 && g <= 1);
       assert(b >= 0 && b <= 1);
       assert(a >= 0 && a <= 1);
-      assert(d1 <>= 0);
-      assert(d2 <>= 0);
-      assert(vd1 <>= 0);
-      assert(vd2 <>= 0);
-      assert(num <>= 0);
-      assert(trgNum <>= 0);
+      assert(!isNaN(d1));
+      assert(!isNaN(d2));
+      assert(!isNaN(vd1));
+      assert(!isNaN(vd2));
+      assert(!isNaN(num));
+      assert(!isNaN(trgNum));
       assert(trgSize > 0);
     }
   }

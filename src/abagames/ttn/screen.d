@@ -10,6 +10,7 @@ private import opengl;
 private import openglu;
 private import abagames.util.sdl.screen3d;
 private import abagames.ttn.field;
+private import std.string;
 
 /**
  * OpenGL screen.

@@ -6,7 +6,7 @@
 module abagames.util.sdl.pad;
 
 private import std.string;
-private import std.stream;
+private import std.stdio;
 private import SDL;
 private import abagames.util.sdl.input;
 private import abagames.util.sdl.recordableinput;
@@ -142,14 +142,14 @@ public class PadState {
 
   public void read(File fd) {
     int s;
-    fd.read(s);
+    fd.rawRead((&s)[0..1]);
     dir = s & (Dir.UP | Dir.DOWN | Dir.LEFT | Dir.RIGHT);
     button = s & Button.ANY;
   }
 
   public void write(File fd) {
     int s = dir | button;
-    fd.write(s);
+    fd.rawWrite((&s)[0..1]);
   }
 
   public bool equals(PadState s) {

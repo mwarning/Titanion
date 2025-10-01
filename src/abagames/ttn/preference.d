@@ -5,9 +5,9 @@
  */
 module abagames.ttn.preference;
 
-private import std.stream;
+private import std.stdio;
 private import std.file;
-private import std.c.stdlib;
+private import core.stdc.stdlib;
 private import std.string;
 private import std.conv;
 private import abagames.util.preference;
@@ -41,15 +41,15 @@ public class Preference: abagames.util.preference.Preference {
 
   public void load() {
     try {
-      scope File fd = new File(pref_dir() ~ "/" ~ PREF_FILE_NAME, FileMode.In);
+      File fd = File(pref_dir() ~ "/" ~ PREF_FILE_NAME);
       int ver;
-      fd.read(ver);
+      fd.rawRead((&ver)[0..1]);
       if (ver != VERSION_NUM)
         throw new Error("Wrong version num");
-      fd.read(_lastMode);
+      fd.rawRead((&_lastMode)[0..1]);
       for(int j = 0; j < MODE_NUM; j++)
         for(int i = 0; i < RANKING_NUM; i++)
-          fd.read(_highScore[j][i]);
+          fd.rawRead((&_highScore[j][i])[0..1]);
     } catch (Throwable e) {
       init();
     }
@@ -63,13 +63,12 @@ public class Preference: abagames.util.preference.Preference {
   }
 
   public void save() {
-    scope File fd = new File(pref_dir() ~ "/" ~ PREF_FILE_NAME, FileMode.OutNew);
-    fd.write(VERSION_NUM);
-    fd.write(_lastMode);
+    File fd = File(pref_dir() ~ "/" ~ PREF_FILE_NAME, "w");
+    fd.rawWrite((&VERSION_NUM)[0..1]);
+    fd.rawWrite((&_lastMode)[0..1]);
     for(int j = 0; j < MODE_NUM; j++)
       for(int i = 0; i < RANKING_NUM; i++)
-        fd.write(_highScore[j][i]);
-    fd.close();
+        fd.rawWrite((&_highScore[j][i])[0..1]);
   }
 
   public void setMode(int mode) {

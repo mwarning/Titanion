@@ -18,11 +18,12 @@ private import abagames.ttn.shape;
  *  specs (maneuver, method of attack, etc.).
  */
 public class Token(ST, SP): Actor {
- protected:
+ public:
   ST state;
   SP spec;
+ protected:
 
-  public override void init(Object[] args) {
+  public override void init_(Object[] args) {
     state = new ST;
   }
 
@@ -68,18 +69,19 @@ public class Token(ST, SP): Actor {
  * Holding a state of a token.
  */
 public class TokenState {
- protected:
-  bool isInitialized = false;
+ public:
   Vector pos;
   float deg;
   float speed;
+ protected:
+  bool isInitialized = false;
 
   invariant() {
     if (isInitialized) {
-      assert(pos.x <>= 0);
-      assert(pos.y <>= 0);
-      assert(deg <>= 0);
-      assert(speed <>= 0);
+      assert(!isNaN(pos.x));
+      assert(!isNaN(pos.y));
+      assert(!isNaN(deg));
+      assert(!isNaN(speed));
     }
   }
 
@@ -104,8 +106,9 @@ public class TokenState {
  * Base class of a token's specification.
  */
 public class TokenSpec(T) {
- protected:
+ public:
   Field field;
+ protected:
   Shape shape;
 
   public void set(T state) {}

@@ -5,7 +5,7 @@
  */
 module abagames.ttn.replay;
 
-private import std.stream;
+private import std.stdio;
 private import abagames.util.sdl.pad;
 private import abagames.util.sdl.recordableinput;
 private import abagames.ttn.preference;
@@ -24,27 +24,28 @@ public class ReplayData {
  private:
 
   public void save(string fileName) {
-    scope File fd = new File(Preference.pref_dir() ~ "/" ~ fileName, FileMode.OutNew);
-    fd.write(VERSION_NUM);
-    fd.write(seed);
-    fd.write(score);
-    fd.write(mode);
-    fd.write(cast(byte) stageRandomized);
+    File fd = File(Preference.pref_dir() ~ "/" ~ fileName, "w");
+    fd.rawWrite((&VERSION_NUM)[0..1]);
+    fd.rawWrite((&seed)[0..1]);
+    fd.rawWrite((&score)[0..1]);
+    fd.rawWrite((&mode)[0..1]);
+    byte sr = stageRandomized;
+    fd.rawWrite((&sr)[0..1]);
     inputRecord.save(fd);
     fd.close();
   }
 
   public void load(string fileName) {
-    scope File fd = new File(Preference.pref_dir() ~ "/" ~ fileName, FileMode.In);
+    File fd = File(Preference.pref_dir() ~ "/" ~ fileName);
     int ver;
-    fd.read(ver);
+    fd.rawRead((&ver)[0..1]);
     if (ver != VERSION_NUM)
       throw new Error("Wrong version num");
-    fd.read(seed);
-    fd.read(score);
-    fd.read(mode);
+    fd.rawRead((&seed)[0..1]);
+    fd.rawRead((&score)[0..1]);
+    fd.rawRead((&mode)[0..1]);
     byte sr;
-    fd.read(sr);
+    fd.rawRead((&sr)[0..1]);
     stageRandomized = cast(bool) sr;
     inputRecord = new InputRecord!(PadState);
     inputRecord.load(fd);

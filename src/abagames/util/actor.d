@@ -23,7 +23,7 @@ public class Actor {
     return _exists = v;
   }
 
-  public abstract void init(Object[] args);
+  public abstract void init_(Object[] args);
   public abstract void move();
   public abstract void draw();
 }
@@ -57,7 +57,7 @@ public class ActorPool(T) {
     foreach (ref T a; actors) {
       a = new T;
       a.exists = false;
-      a.init(args);
+      a.init_(args);
     }
     actorIdx = 0;
     hasNoActor = false;

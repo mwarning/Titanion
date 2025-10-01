@@ -180,10 +180,10 @@ public class PlayerState: TokenState {
 
   invariant() {
     if (isInitialized) {
-      assert(vel.x <>= 0);
-      assert(vel.y <>= 0);
+      assert(!isNaN(vel.x));
+      assert(!isNaN(vel.y));
       assert(capturedEnemyWidth >= 0);
-      assert(captureBeamEnergy <>= 0);
+      assert(!isNaN(captureBeamEnergy));
     }
   }
 
@@ -444,7 +444,7 @@ public class PlayerSpec: TokenSpec!(PlayerState) {
       pos.y += (vy * speed);
       if (!(input.button & PadState.Button.B))
         deg += (-TILT_DEG * (vx * speed) - deg) * 0.1f;
-      assert(deg <>= 0);
+      assert(!isNaN(deg));
       pos += vel;
       vel *= 0.9f;
       if (gameState.mode == GameState.Mode.MODERN) {
@@ -864,7 +864,7 @@ public class TractorBeam {
   bool isExtending;
 
   invariant() {
-    assert(length <>= 0);
+    assert(!isNaN(length));
   }
 
   public this(Field field, PlayerState playerState, GameState gameState) {
