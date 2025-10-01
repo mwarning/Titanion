@@ -16,7 +16,7 @@ private import abagames.util.sdl.sdlexception;
  */
 public class Texture {
  public:
-  static char[] imagesDir = "images/";
+  static char[] imagesDir = "/usr/share/games/titanion/images/";
   static SDL_Surface*[char[]] surface;
  private:
   GLuint num, maskNum;

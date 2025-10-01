@@ -61,7 +61,7 @@ public class Sound {
 public class Music {
  public:
   static int fadeOutSpeed = 1280;
-  static char[] dir = "sounds/musics";
+  static char[] dir = "/usr/share/games/titanion/sounds/musics";
  private:
   Mix_Music* music;
 
@@ -115,7 +115,7 @@ public class Music {
  */
 public class Chunk {
  public:
-  static char[] dir = "sounds/chunks";
+  static char[] dir = "/usr/share/games/titanion/sounds/chunks";
  private:
   Mix_Chunk* chunk;
   int chunkChannel;

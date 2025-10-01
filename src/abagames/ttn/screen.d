@@ -17,7 +17,7 @@ private import abagames.ttn.field;
 public class Screen: Screen3D {
  private:
   static const char[] CAPTION = "Titanion";
-  static const char[] ICON_FILE_NAME = "images/ttn_icon32.bmp";
+  static const char[] ICON_FILE_NAME = "/usr/share/games/titanion/images/ttn_icon32.bmp";
   Field field;
 
   protected void setIcon() {
