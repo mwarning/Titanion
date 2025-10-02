@@ -8,6 +8,7 @@
 #include <SDL/SDL_opengl.h>
 
 #include "abagames/ttn/field.hpp"
+#include "abagames/ttn/files.hpp"
 #include "abagames/util/sdl/screen3d.hpp"
 
 /**
@@ -15,7 +16,11 @@
  */
 
 void ScreenImpl::setIcon() {
+#ifdef USE_INTERNAL_FILES
+  SDL_WM_SetIcon(SDL_LoadBMP_RW(SDL_file_wrapper(ICON_FILE_NAME), 0), NULL);
+#else
   SDL_WM_SetIcon(SDL_LoadBMP(ICON_FILE_NAME), NULL);
+#endif
 }
 
 void ScreenImpl::init() {

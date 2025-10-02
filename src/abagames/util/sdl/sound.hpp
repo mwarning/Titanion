@@ -17,6 +17,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
+#include "abagames/ttn/files.hpp"
 #include "abagames/util/sdl/sdlexception.hpp"
 
 /**
@@ -82,7 +83,13 @@ public:
     if (Sound::noSound)
       return;
     std::string fileName = std::string(music_dir) + "/" + name;
+
+#ifdef USE_INTERNAL_FILES
+    music = Mix_LoadMUS_RW(SDL_file_wrapper(fileName));
+#else
     music = Mix_LoadMUS(fileName.c_str());
+#endif
+
     if (!music) {
       Sound::noSound = true;
       throw SDLException("Couldn't load: " + fileName + " (" +
@@ -139,7 +146,13 @@ public:
     if (Sound::noSound)
       return;
     std::string fileName = std::string(chunk_dir) + "/" + name;
+
+#ifdef USE_INTERNAL_FILES
+    chunk = Mix_LoadWAV_RW(SDL_file_wrapper(fileName), 0);
+#else
     chunk = Mix_LoadWAV(fileName.c_str());
+#endif
+
     if (!chunk) {
       Sound::noSound = true;
       throw SDLException("Couldn't load: " + fileName + " (" +

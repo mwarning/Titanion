@@ -13,6 +13,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 
+#include "abagames/ttn/files.hpp"
 #include "abagames/util/sdl/sdlexception.hpp"
 
 /**
@@ -35,7 +36,13 @@ public:
       return surface[name];
     } else {
       std::string fileName = std::string(imagesDir) + name;
+
+#ifdef USE_INTERNAL_FILES
+      SDL_Surface *s = SDL_LoadBMP_RW(SDL_file_wrapper(fileName), 0);
+#else
       SDL_Surface *s = SDL_LoadBMP(fileName.c_str());
+#endif
+
       if (!s)
         throw SDLInitFailedException("Unable to load: " + fileName);
       SDL_PixelFormat format;
