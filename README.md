@@ -4,11 +4,17 @@ Strike down super high-velocity swooping insects. Fixed shooter in the good old 
 
 ![image](resource/ttn_1l.gif)
 
-## About This Port
+## About this Port
 
 This is a C++ conversion of the [original game](https://www.asahi-net.or.jp/~cs8k-cyu/windows/ttn_e.html) by Kenta Cho that was written in the D programming language. There might be bugs. But so far it looks good.
 
+The motivation for this port to C++ is to make it more accessible.
+
 Contributions are welcome!
+
+### Compile&Run
+
+Install `SDL-devel`, `SDL_mixer-devel` and `glu-devel`, then run `make`. This will create a self contained `titanion` binary to run.
 
 ## How to play
 
