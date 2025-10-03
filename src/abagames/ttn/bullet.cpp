@@ -69,6 +69,8 @@ void BulletSpec::draw(const BulletState &bs) {
   case GameState::Mode::MODERN:
     d = bs.deg;
     break;
+  default:
+    assert(0);
   }
   float cd = field->calcCircularDeg(bs.pos.x);
   dynamic_cast<BulletShapeBase *>(shape)->draw(p, cd, d, bs.cnt * 3.0f);

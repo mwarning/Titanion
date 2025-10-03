@@ -4,6 +4,7 @@
  * Copyright 2006 Kenta Cho. Some rights reserved.
  */
 
+#include <cassert>
 #include <cmath>
 
 #include "abagames/ttn/screen.hpp"
@@ -455,6 +456,8 @@ void Letter::drawString(const std::string &str, float lx, float y, float s,
   case Direction::TO_UP:
     ld = 270;
     break;
+  default:
+    assert(0);
   }
   ld += od;
   for (size_t i = 0; i < str.length(); ++i) {

@@ -31,7 +31,7 @@ PadState *Pad::getState() {
     state->dir |= PadState::Dir::UP;
   state->button = 0;
   int btn1 = 0, btn2 = 0;
-  float leftTrigger = 0, rightTrigger = 0;
+  // float leftTrigger = 0, rightTrigger = 0;
   if (stick) {
     btn1 = SDL_JoystickGetButton(stick, 0) + SDL_JoystickGetButton(stick, 2) +
            SDL_JoystickGetButton(stick, 4) + SDL_JoystickGetButton(stick, 6) +

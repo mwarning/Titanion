@@ -4,6 +4,8 @@
  * Copyright 2006 Kenta Cho. Some rights reserved.
  */
 
+#include <cassert>
+
 #include "enemy.hpp"
 
 #include "abagames/ttn/frame.hpp"
@@ -50,6 +52,8 @@ void TurretSpec::setRankNormal(float rank, bool isWide) {
     intervalMax = 120;
     burstInterval = 4 + rand.nextInt(4);
     break;
+  default:
+    assert(0);
   }
   burstNum = (int)sqrt(br) + 1;
   nway = (int)sqrt(nr) + 1;
@@ -137,11 +141,15 @@ void TurretSpec::setRankMiddle(float rank) {
       br = (rank * 0.3f) * (1.0f + rand.nextSignedFloat(0.2f));
       ir = (rank * 0.3f) * (1.0f + rand.nextSignedFloat(0.2f));
       break;
+    default:
+      assert(0);
     }
     nwayDegRatio = 1;
     intervalMax = 120;
     burstInterval = 4 + rand.nextInt(8);
     break;
+  default:
+    assert(0);
   }
   bool acf = false;
   burstNum = (int)sqrt(br) + 1;
@@ -538,6 +546,8 @@ bool EnemySpec::gotoNextPhaseInAppearing(EnemyState &es) {
     case GameState::Mode::MODERN:
       cpw = 0.4f;
       break;
+    default:
+      assert(0);
     }
     es.centerPos.x = rand.nextSignedFloat(field->size().x * cpw);
     es.centerPos.y = field->size().y * 2.0f;
@@ -883,6 +893,8 @@ void MiddleEnemySpec::setRank(float r) {
     rank = 1;
     tr = r * 15;
     break;
+  default:
+    assert(0);
   }
   if (rank < 1.5f)
     rank = 1.5f;
@@ -1060,6 +1072,8 @@ void SmallEnemySpec::setRank(float r) {
     rank = 1;
     tr = r;
     break;
+  default:
+    assert(0);
   }
   if (rank < 1)
     rank = 1;

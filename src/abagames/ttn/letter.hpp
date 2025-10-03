@@ -8,6 +8,7 @@
 #define LETTER_H
 
 #include <SDL/SDL_opengl.h>
+#include <cassert>
 #include <cmath>
 
 #include "abagames/ttn/screen.hpp"
@@ -111,6 +112,8 @@ private:
       idx = 42;
     } else if (c == '/') {
       idx = 43;
+    } else {
+      assert(0);
     }
     return idx;
   }

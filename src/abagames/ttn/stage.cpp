@@ -163,6 +163,8 @@ void Stage::setEnemySpecs() {
     case GameState::Mode::MODERN:
       rs *= 3;
       break;
+    default:
+      assert(0);
     }
     rand->setSeed(rs);
     EnemySpec::rand.setRandSeed(rs);
@@ -188,6 +190,8 @@ void Stage::setEnemySpecs() {
     smallEnemyNum = 4 + rand->nextInt(2);
     middleEnemyAppInterval = 7 + rand->nextInt(3);
     break;
+  default:
+    assert(0);
   }
   smallEnemyFormationNum = (int)(en / smallEnemyNum) + 1;
   middleEnemySpec =
@@ -294,7 +298,7 @@ void Stage::move() {
         ses = dynamic_cast<SmallEnemySpec *>(smallEnemy2Spec);
         break;
       default:
-        break;
+        assert(0);
       }
       e->set(ses, x, field->size().y * Field::PIT_SIZE_Y_RATIO + i * dst, PI,
              sp);

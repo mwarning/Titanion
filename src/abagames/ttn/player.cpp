@@ -213,7 +213,7 @@ bool PlayerSpec::move(PlayerState &ps) {
     vx *= 0.7f;
     vy *= 0.7f;
   }
-  float px = ps.pos.x;
+  // float px = ps.pos.x;
   ps.pos.x += (vx * ps.speed);
   if (gameState->mode() == GameState::Mode::CLASSIC)
     vy *= 0.5f;
